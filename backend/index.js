@@ -1,4 +1,4 @@
-// ===== Required Imports =====
+
 const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
@@ -6,9 +6,11 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const { Server } = require("socket.io");   
 const http = require("http"); 
-const mainRouter = require("./routes/main.router");           
+const mainRouter = require("./routes/main.router");    
 
-// ===== App Config =====
+
+
+
 dotenv.config();
 const app = express();
 const port = process.env.PORT || 3000;
@@ -19,7 +21,13 @@ app.use(bodyParser.json());
 app.use(express.json());       
 
 // ===== MongoDB Local Connection =====
-const mongoURI = "mongodb://127.0.0.1:27017/githubclone";
+const mongoURI = process.env.MONGODB_URI;
+
+mongoose
+  .connect(mongoURI)
+  .then(() => console.log("MongoDB connected locally!"))
+  .catch((err) => console.error("Unable to connect : ", err));
+
 
 mongoose
   .connect(mongoURI)
@@ -68,9 +76,7 @@ db.once("open", async () => {
   // future CRUD operations
 });
 
-// app.get("/", (req, res) => {
-//   res.send("🚀 Socket.io Test Server Running!");
-// });
+
 
 
 // ===== Start Server =====
