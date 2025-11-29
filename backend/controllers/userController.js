@@ -35,7 +35,7 @@ const signup = async (req, res) => {
       { expiresIn: "1h" }
     );
 
-    res.json({ token });
+    res.json({ token,userId: newUser._id  });
 
   } catch (err) {
     console.error("Signup Error:", err.message);
